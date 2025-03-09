@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ejemplo</title>
+</head>
+
+<style>
+    .page-title {
+        color: #333333;
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+    .service-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        padding: 16px;
+    }
+
+    @media (max-width: 768px) {
+        .service-list {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .service-list {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .service-card {
+        background-color: #ffffff;
+        color: #333333;
+        border: 1px solid #cccccc;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+        text-align: center;
+    }
+
+    .service-card:hover {
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .service-name {
+        color: #0078d4;
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .service-description {
+        color: #666666;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .service-details {
+        color: #333333;
+        font-size: 14px;
+        margin-bottom: 16px;
+    }
+
+    .service-card .primary-button {
+        margin-top: 8px;
+    }
+</style>
+
+<body>
+    <div class="service-selection">
+        <h1 class="page-title">Selecciona el servicio que necesitas</h1>
+        <div class="service-list">
+            <!-- Tarjeta de servicio 1 -->
+            <div class="service-card">
+                <h2 class="service-name">Consulta Médica</h2>
+                <p class="service-description">Consulta general con un médico especialista.</p>
+                <p class="service-details">Duración: 30 min | Precio: $50</p>
+                <button class="primary-button">Reservar</button>
+            </div>
+
+            <!-- Tarjeta de servicio 2 -->
+            <div class="service-card">
+                <h2 class="service-name">Masaje Relajante</h2>
+                <p class="service-description">Sesión de masaje para aliviar el estrés.</p>
+                <p class="service-details">Duración: 1 hora | Precio: $80</p>
+                <button class="primary-button">Reservar</button>
+            </div>
+
+            <!-- Tarjeta de servicio 3 -->
+            <div class="service-card">
+                <h2 class="service-name">Asesoría Legal</h2>
+                <p class="service-description">Consulta con un abogado especializado.</p>
+                <p class="service-details">Duración: 45 min | Precio: $100</p>
+                <button class="primary-button">Reservar</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

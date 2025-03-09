@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            place-items: center;
+            height: 100dvh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 5rem;
+        }
+
+        .form {
+            min-width: 400px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 2rem;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        span {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <% if (typeof username !== 'undefined') { %>
+            <div class="form">
+                <h2>Hola <%= username %>!</h2>
+                <p>Estas en la página principal</p>
+                <a href="/dashboard/users">ir al panel de control</a>
+                <a href="/dashboard/dates">ver citas</a>
+                <a href="/agendar">agendar citas</a>
+                <button id="close-session">Cerrar sesión</button>
+            </div>
+        <% } %>
+
+        <% if (typeof username === 'undefined') { %>
+            <div class="form">
+                <h2>Iniciar sesión</h2>
+                <form id="login-form">
+                    <input id="login-username" type="text" name="username" placeholder="Nombre de usuario" required>
+                    <input id="login-password" type="password" name="password" placeholder="Contraseña" required>
+                    <button type="submit">Iniciar sesión</button>
+                    <span>&nbsp;</span>
+                </form>
+            </div>
+            <div class="form">
+                <h2>Registrarse</h2>
+                <form id="register-form">
+                    <input id="register-name" type="text" name="name" placeholder="Nombre" required>
+                    <input id="register-last_name" type="text" name="last_name" placeholder="Apellido" required>
+                    <input id="register-email" type="email" name="email" placeholder="Correo" required>
+                    <input id="register-password" type="password" name="password" placeholder="Contraseña" required>
+                    <input id="register-confirm-password" type="password" name="password" placeholder="Confirmar contraseña" required>
+                    <button type="submit">Registrarse</button>
+                    <span>&nbsp;</span>
+                </form>
+            </div>
+        <% } %>
+    </div>
+    <script>
+        const $ = el => document.querySelector(el)
+
+        const loginForm = $('#login-form')
+        const loginSpan = $('#login-form span')
+
+        const registerForm = $('#register-form')
+        const registerSpan = $('#register-form span')
+
+        const logoutButton = $('#close-session')
+
+        loginForm?.addEventListener('submit', e => {
+            e.preventDefault()
+            const username = $('#login-username').value
+            const password = $('#login-password').value
+
+            fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => {
+                if (res.ok) {
+                    loginSpan.innerText = 'Sesión iniciada ... Entrando ...'
+                    loginSpan.style.color = 'green'
+                    setTimeout(() => {
+                        window.location.href = '/'
+                    }, 2000)
+                } else {
+                    loginSpan.innerText = 'Usuario o contraseña incorrectos'
+                    loginSpan.style.color = 'red'
+                }
+            })
+        })
+
+        registerForm?.addEventListener('submit', e => {
+            e.preventDefault()
+            
+            const name = $('#register-name').value
+            const last_name = $('#register-last_name').value
+            const email = $('#register-email').value
+            const password = $('#register-password').value
+            const confirmPassword = $('#register-confirm-password').value
+
+            if (password !== confirmPassword) {
+                registerSpan.innerText = 'Las contraseñas no coinciden'
+                registerSpan.style.color = 'red'
+                return
+            }
+
+            fetch('/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, last_name, email, password })
+            })
+            .then(res => {
+                if (res.ok) {
+                    registerSpan.innerText = 'Usuario registrado ... Iniciando sesión ...'
+                    registerSpan.style.color = 'green'
+                    setTimeout(() => {
+                        window.location.href = '/'
+                    }, 2000)
+                } else {
+                    registerSpan.innerText = 'Error al registrar usuario'
+                    registerSpan.style.color = 'red'
+                }
+            })
+        })
+
+        logoutButton?.addEventListener('click', e => {
+            fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => {
+                if (res.ok) {
+                    window.location.href = '/'
+                }
+            })
+        })
+    </script>
+</body>
+</html>
