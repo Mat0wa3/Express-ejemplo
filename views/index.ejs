@@ -91,7 +91,7 @@
             <div class="form">
                 <h2>Iniciar sesión</h2>
                 <form id="login-form">
-                    <input id="login-username" type="text" name="username" placeholder="Nombre de usuario" required>
+                    <input id="login-username" type="text" name="username" placeholder="Nombre de usuario" required title="Tu nombre de usuario o correo electronico">
                     <input id="login-password" type="password" name="password" placeholder="Contraseña" required>
                     <button type="submit">Iniciar sesión</button>
                     <span>&nbsp;</span>
@@ -102,7 +102,7 @@
                 <form id="register-form">
                     <input id="register-name" type="text" name="name" placeholder="Nombre" required>
                     <input id="register-last_name" type="text" name="last_name" placeholder="Apellido" required>
-                    <input id="register-email" type="email" name="email" placeholder="Correo" required>
+                    <input id="register-email" type="email" name="email" placeholder="Correo" required title="correo@mail.com">
                     <input id="register-password" type="password" name="password" placeholder="Contraseña" required>
                     <input id="register-confirm-password" type="password" name="password" placeholder="Confirmar contraseña" required>
                     <button type="submit">Registrarse</button>
@@ -185,7 +185,7 @@
         })
 
         logoutButton?.addEventListener('click', e => {
-            fetch('/logout', {
+            fetch('auth/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -24,10 +24,6 @@ export const index = async (req, res) => {
   res.status(200).render("index", user)
 }
 
-export const logout = (req, res) => {
-  res.clearCookie("access_token").send({ message: "User logged out" })
-}
-
 export const userDelete = async (req, res) => {
   const { id } = req.params
   try {
