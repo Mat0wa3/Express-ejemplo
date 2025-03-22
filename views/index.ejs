@@ -22,7 +22,7 @@
             flex-wrap: nowrap;
             gap: 5rem;
         }
-
+        
         .form {
             min-width: 400px;
 
@@ -34,13 +34,13 @@
             background-color: #fff;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
         }
-
+        
         form {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-
+        
         input {
             padding: 10px;
             border: 1px solid #ccc;
@@ -64,15 +64,15 @@
             text-decoration: none;
             color: #007bff;
         }
-
+        
         a:hover {
             text-decoration: underline;
         }
-
+        
         span {
             color: red;
         }
-    </style>
+        </style>
 </head>
 <body>
     <div class="container">
@@ -86,7 +86,7 @@
                 <button id="close-session">Cerrar sesión</button>
             </div>
         <% } %>
-
+        
         <% if (typeof username === 'undefined') { %>
             <div class="form">
                 <h2>Iniciar sesión</h2>
@@ -109,7 +109,7 @@
                     <span>&nbsp;</span>
                 </form>
             </div>
-        <% } %>
+            <% } %>
     </div>
     <script>
         const $ = el => document.querySelector(el)

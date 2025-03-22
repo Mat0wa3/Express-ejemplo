@@ -3,7 +3,7 @@ import { getAllUsers, deleteUser, updateUser, getUserById } from "../models/user
 export const getAll = async (req, res) => {
   try {
     const users = await getAllUsers({})
-    res.status(200).render("dashboard/users", users)
+    res.status(200).send(users)
   } catch {
     res.status(500).send({ message: "Internal server error" })
   }
@@ -22,6 +22,16 @@ export const getUser = async (req, res) => {
 export const index = async (req, res) => {
   const user = req.session.user
   res.status(200).render("index", user)
+}
+
+export const usersDashboard = async (req, res) => {
+  const user = req.session.user
+  res.status(200).render("dashboard/users", user)
+}
+
+export const datesDashboard = async (req, res) => {
+  const user = req.session.user
+  res.status(200).render("dashboard/dates", user)
 }
 
 export const userDelete = async (req, res) => {

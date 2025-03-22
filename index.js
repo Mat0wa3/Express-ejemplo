@@ -23,7 +23,7 @@ app.use('/dates', agendaRoutes)
 
 // Manejo de errores
 app.use((req, res) => {
-  res.status(404).send('Not found')
+  res.status(404).render('404')
 })
 app.use((err, req, res, next) => {
   console.error(err)
