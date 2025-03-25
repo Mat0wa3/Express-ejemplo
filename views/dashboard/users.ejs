@@ -186,7 +186,7 @@
                     <input type="text" name="last_name">
                     <input type="email" name="email">
                     <select name="role" id="role">
-                        <option value=1>Usuario</option>
+                        <option value=3>Cliente</option>
                         <option value=2>Empleado</option>
                     </select>
                 </div>
@@ -218,15 +218,13 @@
 
     <script>
         const $ = el => document.querySelector(el)
-        const $$ = el => document.querySelectorAll(el)
 
         const logoutButton = $('#close-session')
         const toast = $('#toast')
         const modal = $('#modal')
         const form = $('#updateForm')
         const tableBody = $('#users')
-
-
+        
         const showToast = (message, color) => {
             toast.querySelector('p').textContent = message
             toast.style.color = color
@@ -329,8 +327,10 @@
             const email = form.querySelector('input[name="email"]').value
             const roleString = form.querySelector('select[name="role"]').value
 
+            const row = $(`tr[data-id="${id}"]`)
+
             const role = parseInt(roleString)
-            const roleText = role === 1 ? 'USER' : 'EMPLOYE'
+            const roleText = role === 2 ? 'Empleado' : 'Cliente'
 
             fetch(`http://localhost:3000/users/${id}`, {
                 method: 'put',
@@ -342,9 +342,28 @@
             .then(res => {
                 if (res.ok) {
                     showToast('Usuario actualizado', 'green')
-                    setTimeout(() => {
-                        location.reload()
-                    }, 1500)
+                    row.innerHTML = `
+                    <td>
+                        ${id}
+                    </td>
+                    <td>
+                        ${name}
+                    </td>
+                    <td>
+                        ${last_name}
+                    </td>
+                    <td>
+                        ${email}
+                    </td>
+                    <td>
+                        ${roleText}
+                    </td>
+                    <td class="actions">
+                        <button id="editButton" onclick="openUserForm('${id}')">Editar</button>
+                        <button id="deleteButton" onclick="deleteUser('${id}')">Eliminar</button>
+                    </td>
+                    `
+                    modal.close()
                 } else {
                     showToast('Error al actualizar el usuario', '#dc3545')
                 }

@@ -4,6 +4,15 @@ export const getAll = async (req, res) => {
   try {
     const users = await getAllUsers({})
     res.status(200).send(users)
+  } catch (e) {
+    res.status(500).send({ message: "Internal server error " + e.message})
+  }
+}
+
+export const getEmployes = async (req, res) => {
+  try {
+    const users = await getAllUsers({ role: 2 })
+    res.status(200).send(users)
   } catch {
     res.status(500).send({ message: "Internal server error" })
   }

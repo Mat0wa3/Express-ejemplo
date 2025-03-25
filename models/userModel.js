@@ -4,7 +4,11 @@ import { SALT } from '../config.js'
 
 export const findUserByEmail = async (email) => {
     const [rows] = await db.query(
-        `SELECT BIN_TO_UUID(id_user) id_user, name, email, pass FROM users WHERE email = "${email}" OR name = "${email}"`
+        `SELECT BIN_TO_UUID(u.id_user) id, u.name, u.email, r.name role, u.pass 
+        FROM users u 
+        LEFT JOIN roles r ON u.id_role = r.id_role 
+        WHERE u.email = ? OR u.name = ?`,
+        [email, email]
     )
     return rows[0]
 }
@@ -23,7 +27,7 @@ export const createUser = async (input) => {
     
     await db.query(
         `INSERT INTO users (id_user, name, last_name, email, id_role, pass) 
-        VALUES (UUID_TO_BIN("${id_user}"), ?, ?, ?, 1, ?)`, 
+        VALUES (UUID_TO_BIN("${id_user}"), ?, ?, ?, 3, ?)`, 
         [name, last_name, email, hashedPassword]
     )
     
@@ -38,7 +42,7 @@ export const createUser = async (input) => {
 export const getAllUsers = async ({ role }) => {
     if (role) {
         const [users] = await db.query(
-            `SELECT BIN_TO_UUID(u.id_user) id, u.name, u.email, r.name role
+            `SELECT BIN_TO_UUID(u.id_user) id, u.name, u.last_name, u.email, r.name role
             FROM users u
             LEFT JOIN roles r ON u.id_role = r.id_role
             WHERE u.id_role = ?`,

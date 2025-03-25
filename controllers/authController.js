@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import { SECRET_KEY } from "../config.js";
-import { findUserByEmail, createUser } from "../models/userModel.js";
+import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
+import { SECRET_KEY } from "../config.js"
+import { findUserByEmail, createUser } from "../models/userModel.js"
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -13,29 +13,29 @@ const generateToken = (user) => {
     },
     SECRET_KEY,
     { expiresIn: "1h" }
-  );
-};
+  )
+}
 
 export const register = async (req, res) => {
-  const input = req.body;
+  const input = req.body
 
   try {
-    const user = await createUser(input);
-    res.status(201).send(user);
+    const user = await createUser(input)
+    res.status(201).send(user)
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send(error.message)
   }
-};
+}
 
 export const login = async (req, res) => {
-  const { username, password } = req.body;
-  const user = await findUserByEmail(username);
-  if (!user) return res.status(404).send({ message: "user not found" });
+  const { username, password } = req.body
+  const user = await findUserByEmail(username)
+  if (!user) return res.status(404).send({ message: "user not found" })
 
-  const isValid = await bcrypt.compare(password, user.pass);
-  if (!isValid) return res.status(401).send({ message: "invalid password" });
+  const isValid = await bcrypt.compare(password, user.pass)
+  if (!isValid) return res.status(401).send({ message: "invalid password" })
 
-  const token = generateToken(user);
+  const token = generateToken(user)
 
   try {
     res
@@ -46,12 +46,12 @@ export const login = async (req, res) => {
         sameSite: "strict",
         maxAge: 1000 * 60 * 60,
       })
-      .send({ user, token });
+      .send({ user, token })
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send(error.message)
   }
-};
+}
 
 export const logout = (req, res) => {
-  res.clearCookie("access_token").send({ message: "User logged out" });
-};
+  res.clearCookie("access_token").send({ message: "User logged out" })
+}

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agendar cita</title>
     <style>
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
         }
 
@@ -24,18 +27,29 @@
             font-family: sans-serif;
             background: #f2f2f2;
             scroll-behavior: smooth;
-	    }
+        }
 
-        img, picture, video, canvas, svg {
+        img,
+        picture,
+        video,
+        canvas,
+        svg {
             display: block;
             max-width: 100%;
         }
 
-        input, button, textarea, select {
+        input,
+        button,
+        textarea,
+        select {
             font: inherit;
         }
 
-        p, h1, h2, h3, h4 {
+        p,
+        h1,
+        h2,
+        h3,
+        h4 {
             overflow-wrap: break-word;
         }
 
@@ -43,11 +57,15 @@
             text-wrap: pretty;
         }
 
-        h1, h2, h3, h4 {
+        h1,
+        h2,
+        h3,
+        h4 {
             text-wrap: balance;
         }
 
-        #root, #__next {
+        #root,
+        #__next {
             isolation: isolate;
         }
 
@@ -76,7 +94,7 @@
             color: #fff;
             padding: 0 15px;
             border-radius: 9999px;
-            
+
             &:hover {
                 background-color: #0078d4;
             }
@@ -87,39 +105,98 @@
         }
 
         main {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+            display: grid;
+            place-items: center;
         }
 
         figure {
             margin: 0;
         }
 
-        .employeCard {
-            max-width: 320px;
-            border: 2px solid deeppink;
-            border-radius: 1.25rem;
-            overflow: hidden;
+        #service-list {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .service-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            background: #13151a;
-            color: #f2f2f2;
-            text-align: center;
-            box-shadow: 0 0 10px #222;
-            transition: scale .3s ease,
-                        box-shadow .3s ease;
+            transition: transform 0.2s;
 
             &:hover {
-                scale: 1.05;
-                box-shadow: 4px 6px 12px #222;
+                transform: scale(1.05);
+            }
+
+            h3 {
+                margin: 0;
+            }
+
+            p {
+                margin: 0;
+            }
+
+            img {
+                width: 100%;
+                border-radius: 10px;
             }
         }
 
-        .employeCard span {
-            padding: 1rem;
+        #date-selection {
+            display: none;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+
+            input {
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid #333;
+            }
+
+            button {
+                padding: 10px 20px;
+                border-radius: 10px;
+                background-color: #333;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+        }
+
+        #confirm-section {
+            display: none;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+
+            button {
+                padding: 10px 20px;
+                border-radius: 10px;
+                background-color: #333;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+        }
+
+        .selected {
+            border: 2px solid #333;
+        }
+
+        #dateForm {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
     </style>
 </head>
+
 <body>
     <header>
         <h2>Agenda tu cita</h2>
@@ -127,54 +204,113 @@
     </header>
 
     <main>
-        <form id="dateForm"></form>
-        <article class="employeCard">
-            <figure>
-                <img src="https://preview.redd.it/what-do-you-think-v0-c71arj0mnuce1.jpeg?width=640&crop=smart&auto=webp&s=c0ecf9325dd6f690d73103024a0bf98d34208918" alt="Foto de perfíl">
-            </figure>
-            <span>
-                Nombre del empleado
-            </span>
-        </article>
-        <article class="employeCard">
-            <figure>
-                <img src="https://preview.redd.it/what-do-you-think-v0-c71arj0mnuce1.jpeg?width=640&crop=smart&auto=webp&s=c0ecf9325dd6f690d73103024a0bf98d34208918" alt="Foto de perfíl">
-            </figure>
-            <span>
-                Nombre del empleado
-            </span>
-        </article>
-
+        <form id="dateForm">
+            <div id="service-list">
+                <div class="service-card" data-service="1" onclick="selectService('corte-de-cabello', '<%= id %>' ,'7b8b070e-0770-11f0-869c-14cb1909f90e', 200)">
+                    <h3>Corte de cabello</h3>
+                    <p>Duración: 30 minutos</p>
+                    <p>empleado2</p>
+                    <img src="haircut.jpg" alt="Corte de cabello">
+                </div>
+                <div class="service-card" data-service="2" onclick="selectService('manicura', '<%= id %>', '9751caa5-06d8-11f0-b25d-14cb1909f90e', 150)">
+                    <h3>Manicura</h3>
+                    <p>Duración: 45 minutos</p>
+                    <p>empleado1</p>
+                    <img src="manicure.jpg" alt="Manicura">
+                </div>
+            </div>
+            <div id="date-selection">
+                <input type="date" id="date" required>
+                <input type="time" id="time" required>
+                <button id="back-service" type="button">Atrás</button>
+                <button type="button" onclick="selectDate()">Siguiente</button>
+            </div>
+            <div id="confirm-section">
+                <h3>Confirmar cita</h3>
+                <p id="service"></p>
+                <p id="employe"></p>
+                <p id="date-time"></p>
+                <p id="price"></p>
+                <button id="back-date" type="button">Atrás</button>
+                <button type="button" onclick="confirmDate()">Confirmar</button>
+            </div>
+        </form>
     </main>
 </body>
+
 </html>
 
 <script>
     const $ = el => document.querySelector(el)
 
-    const dateForm = $('#dateForm')
-    const employes = async () => {
-        const employe = await fetch('http://localhost:3000/api/dashboard/users/2', {
-            method: 'GET'
-        }).then(res => res.json())
+    const back_date = $('#back-date')
+    const back_service = $('#back-service')
+    const service1 = $('.service-card[data-service="1"]')
+    const service2 = $('.service-card[data-service="2"]')
 
-        return employe.users
-    } 
-    
-    const users = employes()
-
-    console.log({users})
-
-    for (const user in users) {
-        dateForm.innerHTML = `
-            <article data-id='${user.id}' class="employeCard">
-                <figure>
-                    <img src="https://preview.redd.it/what-do-you-think-v0-c71arj0mnuce1.jpeg?width=640&crop=smart&auto=webp&s=c0ecf9325dd6f690d73103024a0bf98d34208918" alt="Foto de perfíl">
-                </figure>
-                <span>
-                    ${user.name}
-                </span>
-            </article>
-        `
+    let date = {
+        day: '',
+        time: '',
+        description: '',
+        id_client: '',
+        id_employe: '',
+        price: 0
     }
+
+    function selectService(service, client, employe, price) {
+        date.id_client = client
+        date.description = service
+        date.id_employe = employe
+        date.price = price
+        $('#service-list').style.display = 'none'
+        $('#date-selection').style.display = 'flex'
+    }
+
+    function selectDate() {
+        date.day = $('#date').value
+        date.time = $('#time').value
+        $('#date-selection').style.display = 'none'
+        $('#confirm-section').style.display = 'flex'
+
+        $('#service').textContent = `Servicio: ${date.description}`
+        $('#employe').textContent = `Empleado: ${date.id_employe}`
+        $('#date-time').textContent = `Fecha y hora: ${date.day} ${date.time}`
+        $('#price').textContent = `Precio: $${date.price}`
+    }
+
+    function confirmDate() {
+        fetch('/dates/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(date)
+        })
+        .then(res => {
+            if (res.ok) {
+                alert('Cita agendada correctamente')
+                window.location.href = '/'
+            }
+        })
+    }
+
+    back_date.addEventListener('click', () => {
+        $('#confirm-section').style.display = 'none'
+        $('#date-selection').style.display = 'flex'
+    })
+
+    back_service.addEventListener('click', () => {
+        $('#date-selection').style.display = 'none'
+        $('#service-list').style.display = 'flex'
+    })
+
+    service1.addEventListener('click', () => {
+        service1.classList.add('selected')
+        service2.classList.remove('selected')
+    })
+
+    service2.addEventListener('click', () => {
+        service2.classList.add('selected')
+        service1.classList.remove('selected')
+    })
 </script>
