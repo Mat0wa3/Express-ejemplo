@@ -29,7 +29,7 @@ API REST sencilla creada con Express.js para demostrar conceptos básicos de rut
 ## 🛠️ Instalación  
 1. Clona el repositorio:  
    ```bash
-   git clone https://github.com/tu-usuario/express-ejemplo.git
+   git clone https://github.com/Mat0wa3/express-ejemplo.git
 2. Crea un archivo de configuración llamado `config.js`\
    ejemplo de config.js:
     ```javascript
